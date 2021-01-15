@@ -28,7 +28,7 @@ public interface GlobalTransaction {
 
     /**
      * Begin a new global transaction with default timeout and name.
-     *
+     * 开启一个全局事务（使用默认的事务名和超时时间）
      * @throws TransactionException Any exception that fails this will be wrapped with TransactionException and thrown
      * out.
      */
@@ -36,7 +36,7 @@ public interface GlobalTransaction {
 
     /**
      * Begin a new global transaction with given timeout and default name.
-     *
+     * 开启一个全局事务，并指定超时时间（使用默认的事务名）
      * @param timeout Global transaction timeout in MILLISECONDS
      * @throws TransactionException Any exception that fails this will be wrapped with TransactionException and thrown
      * out.
@@ -45,7 +45,7 @@ public interface GlobalTransaction {
 
     /**
      * Begin a new global transaction with given timeout and given name.
-     *
+     * 开启一个全局事务，并指定事务名和超时时间
      * @param timeout Given timeout in MILLISECONDS.
      * @param name    Given name.
      * @throws TransactionException Any exception that fails this will be wrapped with TransactionException and thrown
@@ -55,7 +55,7 @@ public interface GlobalTransaction {
 
     /**
      * Commit the global transaction.
-     *
+     * 全局提交
      * @throws TransactionException Any exception that fails this will be wrapped with TransactionException and thrown
      * out.
      */
@@ -63,7 +63,7 @@ public interface GlobalTransaction {
 
     /**
      * Rollback the global transaction.
-     *
+     * 全局回滚
      * @throws TransactionException Any exception that fails this will be wrapped with TransactionException and thrown
      * out.
      */
@@ -72,7 +72,6 @@ public interface GlobalTransaction {
     /**
      * Suspend the global transaction.
      *
-     * @param unbindXid if true,suspend the global transaction.
      * @return the SuspendedResourcesHolder which holds the suspend resources
      * @throws TransactionException Any exception that fails this will be wrapped with TransactionException and thrown
      * @see SuspendedResourcesHolder
@@ -91,7 +90,7 @@ public interface GlobalTransaction {
 
     /**
      * Ask TC for current status of the corresponding global transaction.
-     *
+     * 获取事务的当前状态
      * @return Status of the corresponding global transaction.
      * @throws TransactionException Any exception that fails this will be wrapped with TransactionException and thrown
      * out.
@@ -101,7 +100,7 @@ public interface GlobalTransaction {
 
     /**
      * Get XID.
-     *
+     * 获取事务的 XID
      * @return XID. xid
      */
     String getXid();

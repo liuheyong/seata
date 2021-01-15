@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class HttpHandlerExceptionResolver extends AbstractHandlerExceptionResolver {
 
-
     @Override
     protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse httpServletResponse, Object o, Exception e) {
 

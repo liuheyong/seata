@@ -21,6 +21,7 @@ import io.seata.core.model.GlobalStatus;
 
 /**
  * GlobalTransaction API
+ * GlobalTransaction 实例的获取需要通过 GlobalTransactionContext
  *
  * @author sharajava
  */
@@ -53,6 +54,7 @@ public class GlobalTransactionContext {
 
     /**
      * Get GlobalTransaction instance bind on current thread. Create a new on if no existing there.
+     * 获取当前的全局事务实例，如果没有则创建一个新的实例。
      *
      * @return new context if no existing there.
      */
@@ -71,10 +73,15 @@ public class GlobalTransactionContext {
      * @return reloaded transaction instance.
      * @throws TransactionException the transaction exception
      */
-    public static GlobalTransaction reload(String xid) throws TransactionException {
+    /**
+     * 重新载入给定 XID 的全局事务实例，这个实例不允许执行开启事务的操作。
+     * 这个 API 通常用于失败的事务的后续集中处理。
+     * 比如：全局提交超时，后续集中处理通过重新载入该实例，通过实例方法获取事务当前状态，并根据状态判断是否需要重试全局提交操作。
+     */
+    public static GlobalTransaction reload(String xid) {
         return new DefaultGlobalTransaction(xid, GlobalStatus.UnKnown, GlobalTransactionRole.Launcher) {
             @Override
-            public void begin(int timeout, String name) throws TransactionException {
+            public void begin(int timeout, String name) {
                 throw new IllegalStateException("Never BEGIN on a RELOADED GlobalTransaction. ");
             }
         };

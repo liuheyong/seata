@@ -31,9 +31,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  */
 public class TransactionPropagationIntercepter extends HandlerInterceptorAdapter {
 
-
     private static final Logger LOGGER = LoggerFactory.getLogger(TransactionPropagationIntercepter.class);
-
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {

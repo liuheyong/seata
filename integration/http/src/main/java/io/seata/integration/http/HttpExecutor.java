@@ -27,7 +27,6 @@ public interface HttpExecutor {
 
     <T, K> K executePost(String host, String path, T paramObject, Class<K> returnType) throws IOException;
 
-
     /**
      * get method only support param type of Map<String,String>
      *

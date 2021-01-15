@@ -115,7 +115,7 @@ public abstract class AbstractHttpExecutor implements HttpExecutor {
     protected abstract <T> void buildClientEntity(CloseableHttpClient httpClient, T paramObject);
 
     private <K> K wrapHttpExecute(Class<K> returnType, CloseableHttpClient httpClient, HttpUriRequest httpUriRequest,
-            Map<String, String> headers) throws IOException {
+                                  Map<String, String> headers) throws IOException {
         CloseableHttpResponse response;
         String xid = RootContext.getXID();
         if (xid != null) {
@@ -149,7 +149,8 @@ public abstract class AbstractHttpExecutor implements HttpExecutor {
 
 
     public static Map<String, String> convertParamOfBean(Object sourceParam) {
-        return CollectionUtils.toStringMap(JSON.parseObject(JSON.toJSONString(sourceParam, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteMapNullValue), Map.class));
+        return CollectionUtils.toStringMap(JSON.parseObject(JSON.toJSONString(sourceParam,
+                SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteMapNullValue), Map.class));
     }
 
     public static <T> Map<String, String> convertParamOfJsonString(String jsonStr, Class<T> returnType) {

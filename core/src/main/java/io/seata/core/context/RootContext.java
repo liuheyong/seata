@@ -30,7 +30,7 @@ import static io.seata.core.model.BranchType.XA;
 
 /**
  * The type Root context.
- *
+ * 事务的根上下文：负责在应用的运行时，维护 XID 。
  * @author slievrly
  */
 public class RootContext {
@@ -74,7 +74,7 @@ public class RootContext {
 
     /**
      * Gets xid.
-     *
+     * 得到当前应用运行时的全局事务 XID
      * @return the xid
      */
     @Nullable
@@ -84,7 +84,7 @@ public class RootContext {
 
     /**
      * Bind xid.
-     *
+     * 将全局事务 XID 绑定到当前应用的运行时中
      * @param xid the xid
      */
     public static void bind(@Nonnull String xid) {
@@ -132,7 +132,7 @@ public class RootContext {
 
     /**
      * In global transaction boolean.
-     *
+     * 判断当前应用的运行时是否处于全局事务的上下文中
      * @return the boolean
      */
     public static boolean inGlobalTransaction() {

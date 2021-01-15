@@ -32,13 +32,12 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Template of executing business logic with a global transaction.
- *
+ * 事务化模板：通过 GlobalTransaction 和 GlobalTransactionContext API 把一个业务服务的调用包装成带有分布式事务支持的服务。
  * @author sharajava
  */
 public class TransactionalTemplate {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransactionalTemplate.class);
-
 
     /**
      * Execute object.
@@ -48,7 +47,7 @@ public class TransactionalTemplate {
      * @throws TransactionalExecutor.ExecutionException the execution exception
      */
     public Object execute(TransactionalExecutor business) throws Throwable {
-        // 1. Get transactionInfo
+        // 1. 获取当前全局事务实例或创建新的实例
         TransactionInfo txInfo = business.getTransactionInfo();
         if (txInfo == null) {
             throw new ShouldNeverHappenException("transactionInfo does not exist");

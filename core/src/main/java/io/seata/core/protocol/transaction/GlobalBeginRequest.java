@@ -70,7 +70,6 @@ public class GlobalBeginRequest extends AbstractTransactionRequestToTC {
         return MessageType.TYPE_GLOBAL_BEGIN;
     }
 
-
     @Override
     public AbstractTransactionResponse handle(RpcContext rpcContext) {
         return handler.handle(this, rpcContext);
@@ -84,7 +83,6 @@ public class GlobalBeginRequest extends AbstractTransactionRequestToTC {
         result.append(",");
         result.append("transactionName=");
         result.append(transactionName);
-
         return result.toString();
     }
 }
