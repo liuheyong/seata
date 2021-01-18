@@ -34,7 +34,6 @@ public class PortHelper {
                 }
             }
         }
-
         return SERVER_DEFAULT_PORT;
     }
 

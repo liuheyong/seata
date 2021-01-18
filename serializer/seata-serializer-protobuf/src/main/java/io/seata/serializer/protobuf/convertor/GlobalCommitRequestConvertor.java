@@ -15,12 +15,8 @@
  */
 package io.seata.serializer.protobuf.convertor;
 
-import io.seata.serializer.protobuf.generated.AbstractGlobalEndRequestProto;
-import io.seata.serializer.protobuf.generated.AbstractMessageProto;
-import io.seata.serializer.protobuf.generated.AbstractTransactionRequestProto;
-import io.seata.serializer.protobuf.generated.GlobalCommitRequestProto;
-import io.seata.serializer.protobuf.generated.MessageTypeProto;
 import io.seata.core.protocol.transaction.GlobalCommitRequest;
+import io.seata.serializer.protobuf.generated.*;
 
 /**
  * @author leizhiyuan
@@ -31,18 +27,18 @@ public class GlobalCommitRequestConvertor implements PbConvertor<GlobalCommitReq
         final short typeCode = globalCommitRequest.getTypeCode();
 
         final AbstractMessageProto abstractMessage = AbstractMessageProto.newBuilder().setMessageType(
-            MessageTypeProto.forNumber(typeCode)).build();
+                MessageTypeProto.forNumber(typeCode)).build();
 
         final AbstractTransactionRequestProto abstractTransactionRequestProto = AbstractTransactionRequestProto
-            .newBuilder().setAbstractMessage(abstractMessage).build();
+                .newBuilder().setAbstractMessage(abstractMessage).build();
 
         final String extraData = globalCommitRequest.getExtraData();
         AbstractGlobalEndRequestProto abstractGlobalEndRequestProto = AbstractGlobalEndRequestProto.newBuilder()
-            .setAbstractTransactionRequest(abstractTransactionRequestProto).setXid(globalCommitRequest.getXid())
-            .setExtraData(extraData == null ? "" : extraData).build();
+                .setAbstractTransactionRequest(abstractTransactionRequestProto).setXid(globalCommitRequest.getXid())
+                .setExtraData(extraData == null ? "" : extraData).build();
 
         GlobalCommitRequestProto result = GlobalCommitRequestProto.newBuilder().setAbstractGlobalEndRequest(
-            abstractGlobalEndRequestProto).build();
+                abstractGlobalEndRequestProto).build();
 
         return result;
 

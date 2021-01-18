@@ -50,5 +50,4 @@ public interface TransactionCoordinatorOutbound {
      */
     BranchStatus branchRollback(GlobalSession globalSession, BranchSession branchSession) throws TransactionException;
 
-
 }

@@ -15,21 +15,15 @@
  */
 package io.seata.spring.annotation;
 
-import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-
 import io.seata.common.util.CollectionUtils;
 import io.seata.common.util.StringUtils;
+import io.seata.config.ConfigurationCache;
 import io.seata.config.ConfigurationChangeEvent;
 import io.seata.config.ConfigurationChangeListener;
 import io.seata.config.ConfigurationFactory;
-import io.seata.config.ConfigurationCache;
 import io.seata.core.constants.ConfigurationKeys;
-import io.seata.core.rpc.netty.RmNettyRemotingClient;
 import io.seata.core.rpc.ShutdownHook;
+import io.seata.core.rpc.netty.RmNettyRemotingClient;
 import io.seata.core.rpc.netty.TmNettyRemotingClient;
 import io.seata.rm.RMClient;
 import io.seata.spring.tcc.TccActionInterceptor;
@@ -53,6 +47,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static io.seata.common.DefaultValues.DEFAULT_DISABLE_GLOBAL_TRANSACTION;
 
@@ -62,7 +60,7 @@ import static io.seata.common.DefaultValues.DEFAULT_DISABLE_GLOBAL_TRANSACTION;
  * @author slievrly
  */
 public class GlobalTransactionScanner extends AbstractAutoProxyCreator
-    implements ConfigurationChangeListener, InitializingBean, ApplicationContextAware, DisposableBean {
+        implements ConfigurationChangeListener, InitializingBean, ApplicationContextAware, DisposableBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -85,7 +83,7 @@ public class GlobalTransactionScanner extends AbstractAutoProxyCreator
     private String accessKey;
     private String secretKey;
     private volatile boolean disableGlobalTransaction = ConfigurationFactory.getInstance().getBoolean(
-        ConfigurationKeys.DISABLE_GLOBAL_TRANSACTION, DEFAULT_DISABLE_GLOBAL_TRANSACTION);
+            ConfigurationKeys.DISABLE_GLOBAL_TRANSACTION, DEFAULT_DISABLE_GLOBAL_TRANSACTION);
     private final AtomicBoolean initialized = new AtomicBoolean(false);
 
     private final FailureHandler failureHandlerHook;
@@ -220,17 +218,18 @@ public class GlobalTransactionScanner extends AbstractAutoProxyCreator
 
     /**
      * The following will be scanned, and added corresponding interceptor:
-     *
+     * <p>
      * TM:
+     *
      * @see io.seata.spring.annotation.GlobalTransactional // TM annotation
      * Corresponding interceptor:
      * @see io.seata.spring.annotation.GlobalTransactionalInterceptor#handleGlobalTransaction(MethodInvocation, GlobalTransactional) // TM handler
-     *
+     * <p>
      * GlobalLock:
      * @see io.seata.spring.annotation.GlobalLock // GlobalLock annotation
      * Corresponding interceptor:
      * @see io.seata.spring.annotation.GlobalTransactionalInterceptor#handleGlobalLock(MethodInvocation) // GlobalLock handler
-     *
+     * <p>
      * TCC mode:
      * @see io.seata.rm.tcc.api.LocalTCC // TCC annotation on interface
      * @see io.seata.rm.tcc.api.TwoPhaseBusinessAction // TCC annotation on try method
@@ -251,13 +250,13 @@ public class GlobalTransactionScanner extends AbstractAutoProxyCreator
                     //TCC interceptor, proxy bean of sofa:reference/dubbo:reference, and LocalTCC
                     interceptor = new TccActionInterceptor(TCCBeanParserUtils.getRemotingDesc(beanName));
                     ConfigurationCache.addConfigListener(ConfigurationKeys.DISABLE_GLOBAL_TRANSACTION,
-                        (ConfigurationChangeListener)interceptor);
+                            (ConfigurationChangeListener) interceptor);
                 } else {
                     Class<?> serviceInterface = SpringProxyUtils.findTargetClass(bean);
                     Class<?>[] interfacesIfJdk = SpringProxyUtils.findInterfaces(bean);
 
                     if (!existsAnnotation(new Class[]{serviceInterface})
-                        && !existsAnnotation(interfacesIfJdk)) {
+                            && !existsAnnotation(interfacesIfJdk)) {
                         return bean;
                     }
 
@@ -265,8 +264,8 @@ public class GlobalTransactionScanner extends AbstractAutoProxyCreator
                         if (globalTransactionalInterceptor == null) {
                             globalTransactionalInterceptor = new GlobalTransactionalInterceptor(failureHandlerHook);
                             ConfigurationCache.addConfigListener(
-                                ConfigurationKeys.DISABLE_GLOBAL_TRANSACTION,
-                                (ConfigurationChangeListener)globalTransactionalInterceptor);
+                                    ConfigurationKeys.DISABLE_GLOBAL_TRANSACTION,
+                                    (ConfigurationChangeListener) globalTransactionalInterceptor);
                         }
                         interceptor = globalTransactionalInterceptor;
                     }
@@ -330,7 +329,7 @@ public class GlobalTransactionScanner extends AbstractAutoProxyCreator
     @Override
     public void afterPropertiesSet() {
         ConfigurationCache.addConfigListener(ConfigurationKeys.DISABLE_GLOBAL_TRANSACTION,
-            (ConfigurationChangeListener)this);
+                (ConfigurationChangeListener) this);
         if (disableGlobalTransaction) {
             if (LOGGER.isInfoEnabled()) {
                 LOGGER.info("Global transaction is disabled.");
@@ -352,7 +351,7 @@ public class GlobalTransactionScanner extends AbstractAutoProxyCreator
     public void onChangeEvent(ConfigurationChangeEvent event) {
         if (ConfigurationKeys.DISABLE_GLOBAL_TRANSACTION.equals(event.getDataId())) {
             LOGGER.info("{} config changed, old value:{}, new value:{}", ConfigurationKeys.DISABLE_GLOBAL_TRANSACTION,
-                disableGlobalTransaction, event.getNewValue());
+                    disableGlobalTransaction, event.getNewValue());
             disableGlobalTransaction = Boolean.parseBoolean(event.getNewValue().trim());
             if (!disableGlobalTransaction && initialized.compareAndSet(false, true)) {
                 initClient();

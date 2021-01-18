@@ -35,5 +35,4 @@ public class BranchCommitRequest extends AbstractBranchEndRequest {
         return handler.handle(this);
     }
 
-
 }
