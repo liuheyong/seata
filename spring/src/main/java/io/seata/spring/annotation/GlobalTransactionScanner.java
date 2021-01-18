@@ -56,11 +56,10 @@ import static io.seata.common.DefaultValues.DEFAULT_DISABLE_GLOBAL_TRANSACTION;
 
 /**
  * The type Global transaction scanner.
- *
+ * 全局事务扫描器。
  * @author slievrly
  */
-public class GlobalTransactionScanner extends AbstractAutoProxyCreator
-        implements ConfigurationChangeListener, InitializingBean, ApplicationContextAware, DisposableBean {
+public class GlobalTransactionScanner extends AbstractAutoProxyCreator implements ConfigurationChangeListener, InitializingBean, ApplicationContextAware, DisposableBean {
 
     private static final long serialVersionUID = 1L;
 

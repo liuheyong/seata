@@ -27,7 +27,6 @@
     <packaging>jar</packaging>
     <name>seata-server ${project.version}</name>
     <dependencies>
-
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>seata-core</artifactId>
@@ -118,7 +117,6 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>
-
     </dependencies>
 
     <build>

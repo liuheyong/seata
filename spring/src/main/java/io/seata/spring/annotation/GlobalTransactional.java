@@ -15,15 +15,11 @@
  */
 package io.seata.spring.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import io.seata.common.DefaultValues;
 import io.seata.tm.api.transaction.Propagation;
 import org.aopalliance.intercept.MethodInvocation;
+
+import java.lang.annotation.*;
 
 /**
  * The interface Global transactional.
@@ -35,7 +31,7 @@ import org.aopalliance.intercept.MethodInvocation;
  * @see io.seata.spring.tcc.TccActionInterceptor#invoke(MethodInvocation) // RM: the interceptor of TCC mode
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD,ElementType.TYPE})
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Inherited
 public @interface GlobalTransactional {
 
@@ -56,30 +52,35 @@ public @interface GlobalTransactional {
 
     /**
      * roll back for the Class
+     *
      * @return
      */
     Class<? extends Throwable>[] rollbackFor() default {};
 
     /**
      * roll back for the class name
+     *
      * @return
      */
     String[] rollbackForClassName() default {};
 
     /**
      * not roll back for the Class
+     *
      * @return
      */
     Class<? extends Throwable>[] noRollbackFor() default {};
 
     /**
      * not roll back for the class name
+     *
      * @return
      */
     String[] noRollbackForClassName() default {};
 
     /**
      * the propagation of the global transaction
+     *
      * @return
      */
     Propagation propagation() default Propagation.REQUIRED;
@@ -88,6 +89,7 @@ public @interface GlobalTransactional {
      * customized global lock retry internal(unit: ms)
      * you may use this to override global config of "client.rm.lock.retryInterval"
      * note: 0 or negative number will take no effect(which mean fall back to global config)
+     *
      * @return
      */
     int lockRetryInternal() default 0;
@@ -96,6 +98,7 @@ public @interface GlobalTransactional {
      * customized global lock retry times
      * you may use this to override global config of "client.rm.lock.retryTimes"
      * note: negative number will take no effect(which mean fall back to global config)
+     *
      * @return
      */
     int lockRetryTimes() default -1;

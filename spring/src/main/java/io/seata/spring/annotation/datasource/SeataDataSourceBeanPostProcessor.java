@@ -15,16 +15,16 @@
  */
 package io.seata.spring.annotation.datasource;
 
-import java.util.Arrays;
-import java.util.List;
-import javax.sql.DataSource;
-
 import io.seata.core.model.BranchType;
 import io.seata.rm.datasource.SeataDataSourceProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+
+import javax.sql.DataSource;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * The type seata data source bean post processor
@@ -61,7 +61,7 @@ public class SeataDataSourceBeanPostProcessor implements BeanPostProcessor {
             //If is SeataDataSourceProxy, return the original data source.
             if (bean instanceof SeataDataSourceProxy) {
                 LOGGER.info("Unwrap the bean of the data source," +
-                    " and return the original data source to replace the data source proxy.");
+                        " and return the original data source to replace the data source proxy.");
                 return ((SeataDataSourceProxy) bean).getTargetDataSource();
             }
         }

@@ -15,14 +15,14 @@
  */
 package io.seata.spring.annotation.datasource;
 
-import javax.sql.DataSource;
-import java.util.concurrent.ConcurrentHashMap;
-
 import io.seata.common.util.CollectionUtils;
 import io.seata.core.model.BranchType;
 import io.seata.rm.datasource.DataSourceProxy;
 import io.seata.rm.datasource.SeataDataSourceProxy;
 import io.seata.rm.datasource.xa.DataSourceProxyXA;
+
+import javax.sql.DataSource;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * the type data source proxy holder
@@ -71,7 +71,7 @@ public class DataSourceProxyHolder {
 
             //If it's an right proxy, return it directly.
             if (dataSourceProxyMode == dataSourceProxy.getBranchType()) {
-                return (SeataDataSourceProxy)dataSource;
+                return (SeataDataSourceProxy) dataSource;
             }
 
             //Get the original data source.

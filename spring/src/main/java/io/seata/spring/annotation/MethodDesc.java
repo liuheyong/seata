@@ -48,7 +48,6 @@ public class MethodDesc {
 
     /**
      * Sets transaction annotation.
-     *
      * @param transactionAnnotation the transaction annotation
      */
     public void setTransactionAnnotation(GlobalTransactional transactionAnnotation) {
