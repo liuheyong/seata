@@ -69,11 +69,12 @@ public class StateMachineDBTests extends AbstractServerTest {
             globalTransaction = (GlobalTransaction) params.get(DomainConstants.VAR_NAME_GLOBAL_TX);
         }
         if (globalTransaction == null) {
-            try {
-                globalTransaction = GlobalTransactionContext.reload(instance.getId());
-            } catch (TransactionException e) {
-                e.printStackTrace();
-            }
+            globalTransaction = GlobalTransactionContext.reload(instance.getId());
+            //try {
+            //    globalTransaction = GlobalTransactionContext.reload(instance.getId());
+            //} catch (TransactionException e) {
+            //    e.printStackTrace();
+            //}
         }
         return globalTransaction;
     }

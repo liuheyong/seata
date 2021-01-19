@@ -49,6 +49,7 @@
         <module>compressor</module>
         <module>saga</module>
         <module>sqlparser</module>
+        <module>examples</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -175,7 +176,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
 
