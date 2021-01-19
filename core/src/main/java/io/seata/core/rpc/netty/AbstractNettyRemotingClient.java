@@ -164,7 +164,6 @@ public abstract class AbstractNettyRemotingClient extends AbstractNettyRemoting 
                     mergeLock.notifyAll();
                 }
             }
-
             try {
                 return messageFuture.get(timeoutMillis, TimeUnit.MILLISECONDS);
             } catch (Exception exx) {
@@ -176,7 +175,6 @@ public abstract class AbstractNettyRemotingClient extends AbstractNettyRemoting 
                     throw new RuntimeException(exx);
                 }
             }
-
         } else {
             Channel channel = clientChannelManager.acquireChannel(serverAddress);
             return super.sendSync(channel, rpcMessage, timeoutMillis);

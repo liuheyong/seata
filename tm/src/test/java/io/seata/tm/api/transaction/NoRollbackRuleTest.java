@@ -33,7 +33,5 @@ public class NoRollbackRuleTest {
         Assertions.assertEquals(rollbackRuleByName, otherRollbackRuleByName);
         NoRollbackRule otherRollbackRuleByName3 = new NoRollbackRule(Exception.class.getName());
         Assertions.assertEquals(otherRollbackRuleByName3.toString(),"NoRollbackRule with pattern [" + Exception.class.getName() + "]");
-
-
     }
 }

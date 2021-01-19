@@ -76,14 +76,16 @@ public class RollbackRuleTest {
     public void ctorArgExceptionStringNameVersionWithNull() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new RollbackRule((String) null));
     }
+
     @Test
-    public void toStringTest(){
+    public void toStringTest() {
         RollbackRule otherRollbackRuleByName = new RollbackRule(Exception.class.getName());
-        Assertions.assertEquals(otherRollbackRuleByName.toString(), String.format("RollbackRule with pattern [%s]", Exception.class.getName()));
+        Assertions.assertEquals(otherRollbackRuleByName.toString(), String.format("RollbackRule with pattern [%s]",
+                Exception.class.getName()));
     }
 
     @Test
-    public void equalsTest(){
+    public void equalsTest() {
         RollbackRule otherRollbackRuleByName = new RollbackRule(Exception.class.getName());
         RollbackRule otherRollbackRuleByName2 = new NoRollbackRule(Exception.class.getName());
 
