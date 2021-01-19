@@ -27,5 +27,5 @@ public interface OrderService {
      * @param orderCount    订购数量
      * @return 生成的订单
      */
-    Order create(String userId, String commodityCode, int orderCount);
+    Order create(String userId, String commodityCode, int orderCount, int orderMoney);
 }

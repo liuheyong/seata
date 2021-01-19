@@ -17,21 +17,14 @@
 package com.alibaba.fescar.tm.dubbo.service.impl;
 
 import com.alibaba.fescar.test.common.ApplicationKeeper;
-import com.alibaba.fescar.tm.dubbo.service.AccountService;
 import com.alibaba.fescar.tm.dubbo.dto.Order;
 import com.alibaba.fescar.tm.dubbo.service.OrderService;
 import io.seata.core.context.RootContext;
+import org.apache.dubbo.qos.server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 /**
  * Please add the follow VM arguments:
@@ -43,20 +36,14 @@ public class OrderServiceImpl implements OrderService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderService.class);
 
-    private AccountService accountService;
-
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public Order create(String userId, String commodityCode, int orderCount) {
+    public Order create(String userId, String commodityCode, int orderCount, int orderMoney) {
         LOGGER.info("Order Service Begin ... xid: " + RootContext.getXID());
 
-        // 计算订单金额
-        int orderMoney = calculate(orderCount);
-
-        // 从账户余额扣款
-        // TODO 从账户扣款
-        accountService.debit(userId, orderMoney);
+        String insertSql = "insert into order_tbl (user_id, commodity_code, count, money) values (" +  userId + ", " + commodityCode + ", " + orderCount + ", " + orderMoney + ")";
+        int rows = jdbcTemplate.update(insertSql);
 
         final Order order = new Order();
         order.userId = userId;
@@ -64,47 +51,23 @@ public class OrderServiceImpl implements OrderService {
         order.count = orderCount;
         order.money = orderMoney;
 
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-
         LOGGER.info("Order Service SQL: insert into order_tbl (user_id, commodity_code, count, money) values ({}, {}, {}, {})",
                 userId, commodityCode, orderCount, orderMoney);
-        // TODO 创建订单
-        jdbcTemplate.update(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement pst = con.prepareStatement(
-                        "insert into order_tbl (user_id, commodity_code, count, money) values (?, ?, ?, ?)",
-                        PreparedStatement.RETURN_GENERATED_KEYS);
-                pst.setObject(1, order.userId);
-                pst.setObject(2, order.commodityCode);
-                pst.setObject(3, order.count);
-                pst.setObject(4, order.money);
-                return pst;
-            }
-        }, keyHolder);
-
-        order.id = keyHolder.getKey().longValue();
 
         LOGGER.info("Order Service End ... Created " + order);
 
         return order;
     }
 
-    public void setAccountService(AccountService accountService) {
-        this.accountService = accountService;
-    }
-
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-    }
-
-    private int calculate(int orderCount) {
-        return 200 * orderCount;
     }
 
     public static void main(String[] args) {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"dubbo-order-service.xml"});
         context.getBean("service");
+        //关闭QOS服务
+        Server.getInstance().stop();
         new ApplicationKeeper(context).keep();
     }
 }

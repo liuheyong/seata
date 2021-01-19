@@ -16,6 +16,7 @@
 
 package com.alibaba.fescar.tm.dubbo.service.impl;
 
+import com.alibaba.fescar.tm.dubbo.service.AccountService;
 import com.alibaba.fescar.tm.dubbo.service.BusinessService;
 import com.alibaba.fescar.tm.dubbo.service.OrderService;
 import com.alibaba.fescar.tm.dubbo.service.StorageService;
@@ -37,16 +38,31 @@ public class BusinessServiceImpl implements BusinessService {
 
     private StorageService storageService;
     private OrderService orderService;
+    private AccountService accountService;
 
     @Override
     @GlobalTransactional
     public void purchase(String userId, String commodityCode, int orderCount) {
         LOGGER.info("purchase begin ... xid: " + RootContext.getXID());
-        // TODO 扣减库存
+        // TODO ①、扣减库存
         storageService.deduct(commodityCode, orderCount);
-        // TODO 从账户扣款 创建订单
-        orderService.create(userId, commodityCode, orderCount);
+        // TODO ②、从账户扣款
+        // 计算订单金额
+        int orderMoney = calculate(orderCount);
+        // 从账户扣款
+        accountService.debit(userId, orderMoney);
+        // TODO ③、创建订单
+        orderService.create(userId, commodityCode, orderCount, orderMoney);
+        // TODO RuntimeException
         throw new RuntimeException("xxx");
+    }
+
+    private int calculate(int orderCount) {
+        return 200 * orderCount;
+    }
+
+    public void setAccountService(AccountService accountService) {
+        this.accountService = accountService;
     }
 
     public void setStorageService(StorageService storageService) {
@@ -60,6 +76,6 @@ public class BusinessServiceImpl implements BusinessService {
     public static void main(String[] args) {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"dubbo-business.xml"});
         final BusinessService business = (BusinessService) context.getBean("business");
-        business.purchase("U100001", "C00321", 2);
+        business.purchase("100", "321", 2);
     }
 }

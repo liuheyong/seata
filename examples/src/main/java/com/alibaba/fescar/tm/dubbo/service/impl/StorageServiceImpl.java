@@ -19,6 +19,7 @@ package com.alibaba.fescar.tm.dubbo.service.impl;
 import com.alibaba.fescar.test.common.ApplicationKeeper;
 import com.alibaba.fescar.tm.dubbo.service.StorageService;
 import io.seata.core.context.RootContext;
+import org.apache.dubbo.qos.server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -45,7 +46,7 @@ public class StorageServiceImpl implements StorageService {
         LOGGER.info("Storage Service Begin ... xid: " + RootContext.getXID());
         LOGGER.info("Deducting inventory SQL: update storage_tbl set count = count - {} where commodity_code = {}", count, commodityCode);
         // TODO 扣减库存
-        jdbcTemplate.update("update storage_tbl set count = count - ? where commodity_code = ?", new Object[]{count, "11"});
+        jdbcTemplate.update("update storage_tbl set count = count - ? where commodity_code = ?", new Object[]{count, commodityCode});
         LOGGER.info("Storage Service End ... ");
     }
 
@@ -53,8 +54,10 @@ public class StorageServiceImpl implements StorageService {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"dubbo-storage-service.xml"});
         context.getBean("service");
         JdbcTemplate jdbcTemplate = (JdbcTemplate) context.getBean("jdbcTemplate");
-        jdbcTemplate.update("delete from storage_tbl where commodity_code = 'C00321'");
-        jdbcTemplate.update("insert into storage_tbl(commodity_code, count) values ('C00321', 100)");
+        jdbcTemplate.update("delete from storage_tbl where commodity_code = '321'");
+        jdbcTemplate.update("insert into storage_tbl(commodity_code, count) values ('321', 100)");
+        //关闭QOS服务
+        Server.getInstance().stop();
         new ApplicationKeeper(context).keep();
     }
 }

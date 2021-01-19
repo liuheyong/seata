@@ -57,13 +57,10 @@
     <dubbo:application name="dubbo-demo-order-service"/>
     <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
     <dubbo:protocol name="dubbo" port="20883"/>
+
     <dubbo:service interface="com.alibaba.fescar.tm.dubbo.service.OrderService" ref="service" timeout="10000"/>
-
-    <dubbo:reference id="accountService" timeout="60000" retries="0" check="false" interface="com.alibaba.fescar.tm.dubbo.service.AccountService"/>
-
     <bean id="service" class="com.alibaba.fescar.tm.dubbo.service.impl.OrderServiceImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
-        <property name="accountService" ref="accountService"/>
     </bean>
 
     <bean class="io.seata.spring.annotation.GlobalTransactionScanner">

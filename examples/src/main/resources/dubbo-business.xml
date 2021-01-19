@@ -24,12 +24,14 @@
     <dubbo:application name="dubbo-demo-app"/>
     <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
 
-    <dubbo:reference id="orderService" timeout="60000" retries="0" check="false" interface="com.alibaba.fescar.tm.dubbo.service.OrderService"/>
-    <dubbo:reference id="storageService" timeout="60000" retries="0" check="false" interface="com.alibaba.fescar.tm.dubbo.service.StorageService"/>
+    <dubbo:reference id="orderService" timeout="600000" retries="0" check="false" interface="com.alibaba.fescar.tm.dubbo.service.OrderService"/>
+    <dubbo:reference id="storageService" timeout="600000" retries="0" check="false" interface="com.alibaba.fescar.tm.dubbo.service.StorageService"/>
+    <dubbo:reference id="accountService" timeout="600000" retries="0" check="false" interface="com.alibaba.fescar.tm.dubbo.service.AccountService"/>
 
     <bean id="business" class="com.alibaba.fescar.tm.dubbo.service.impl.BusinessServiceImpl">
         <property name="orderService" ref="orderService"/>
         <property name="storageService" ref="storageService"/>
+        <property name="accountService" ref="accountService"/>
     </bean>
 
     <bean class="io.seata.spring.annotation.GlobalTransactionScanner">

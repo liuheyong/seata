@@ -20,6 +20,7 @@ import com.alibaba.fescar.test.common.ApplicationKeeper;
 import com.alibaba.fescar.tm.dubbo.service.AccountService;
 import com.alibaba.fescar.tm.dubbo.service.OrderService;
 import io.seata.core.context.RootContext;
+import org.apache.dubbo.qos.server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -54,8 +55,10 @@ public class AccountServiceImpl implements AccountService {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"dubbo-account-service.xml"});
         context.getBean("service");
         JdbcTemplate jdbcTemplate = (JdbcTemplate) context.getBean("jdbcTemplate");
-        jdbcTemplate.update("delete from account_tbl where user_id = 'U100001'");
-        jdbcTemplate.update("insert into account_tbl(user_id, money) values ('U100001', 1000)");
+        jdbcTemplate.update("delete from account_tbl where user_id = '100'");
+        jdbcTemplate.update("insert into account_tbl(user_id, money) values ('100', 1000)");
+        //关闭QOS服务
+        Server.getInstance().stop();
         new ApplicationKeeper(context).keep();
     }
 }
