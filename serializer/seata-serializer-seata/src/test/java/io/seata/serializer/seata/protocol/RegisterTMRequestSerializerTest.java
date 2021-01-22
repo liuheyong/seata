@@ -28,7 +28,7 @@ import static io.netty.buffer.Unpooled.buffer;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * The type Register tm request codec test.
+ * The type Register operatelog request codec test.
  *
  * @author zhangsen
  */

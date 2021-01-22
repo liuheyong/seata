@@ -19,7 +19,7 @@ package io.seata.serializer.seata.protocol;
 import io.seata.core.protocol.RegisterTMResponse;
 
 /**
- * The type Register tm response codec.
+ * The type Register operatelog response codec.
  *
  * @author zhangsen
  */

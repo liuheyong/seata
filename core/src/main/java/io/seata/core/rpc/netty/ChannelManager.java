@@ -114,7 +114,7 @@ public class ChannelManager {
     }
 
     /**
-     * Register tm channel.
+     * Register operatelog channel.
      *
      * @param request the request
      * @param channel the channel

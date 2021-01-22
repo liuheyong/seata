@@ -14,12 +14,12 @@
  *  limitations under the License.
  */
 
-package com.alibaba.fescar.tm.dubbo.service.impl;
+package com.alibaba.fescar.dubbo.service.impl;
 
-import com.alibaba.fescar.tm.dubbo.service.AccountService;
-import com.alibaba.fescar.tm.dubbo.service.BusinessService;
-import com.alibaba.fescar.tm.dubbo.service.OrderService;
-import com.alibaba.fescar.tm.dubbo.service.StorageService;
+import com.alibaba.fescar.dubbo.service.AccountService;
+import com.alibaba.fescar.dubbo.service.BusinessService;
+import com.alibaba.fescar.dubbo.service.OrderService;
+import com.alibaba.fescar.dubbo.service.StorageService;
 import io.seata.core.context.RootContext;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.slf4j.Logger;

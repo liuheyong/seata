@@ -14,10 +14,11 @@
  *  limitations under the License.
  */
 
-package com.alibaba.fescar.tm.dubbo.service.impl;
+package com.alibaba.fescar.dubbo.service.impl;
 
 import com.alibaba.fescar.test.common.ApplicationKeeper;
-import com.alibaba.fescar.tm.dubbo.service.StorageService;
+import com.alibaba.fescar.dubbo.service.AccountService;
+import com.alibaba.fescar.dubbo.service.OrderService;
 import io.seata.core.context.RootContext;
 import org.apache.dubbo.qos.server.Server;
 import org.slf4j.Logger;
@@ -31,9 +32,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
  *     -Djava.net.preferIPv4Stack=true
  * </pre>
  */
-public class StorageServiceImpl implements StorageService {
+public class AccountServiceImpl implements AccountService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(StorageService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderService.class);
 
     private JdbcTemplate jdbcTemplate;
 
@@ -42,20 +43,20 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public void deduct(String commodityCode, int count) {
-        LOGGER.info("Storage Service Begin ... xid: " + RootContext.getXID());
-        LOGGER.info("Deducting inventory SQL: update storage_tbl set count = count - {} where commodity_code = {}", count, commodityCode);
-        // TODO 扣减库存
-        jdbcTemplate.update("update storage_tbl set count = count - ? where commodity_code = ?", new Object[]{count, commodityCode});
-        LOGGER.info("Storage Service End ... ");
+    public void debit(String userId, int money) {
+        LOGGER.info("Account Service ... xid: " + RootContext.getXID());
+        LOGGER.info("Deducting balance SQL: update account_tbl set money = money - {} where user_id = {}", money, userId);
+        // TODO 从账户扣款
+        jdbcTemplate.update("update account_tbl set money = money - ? where user_id = ?", new Object[]{money, userId});
+        LOGGER.info("Account Service End ... ");
     }
 
     public static void main(String[] args) {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"dubbo-storage-service.xml"});
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"dubbo-account-service.xml"});
         context.getBean("service");
         JdbcTemplate jdbcTemplate = (JdbcTemplate) context.getBean("jdbcTemplate");
-        jdbcTemplate.update("delete from storage_tbl where commodity_code = '321'");
-        jdbcTemplate.update("insert into storage_tbl(commodity_code, count) values ('321', 100)");
+        jdbcTemplate.update("delete from account_tbl where user_id = '100'");
+        jdbcTemplate.update("insert into account_tbl(user_id, money) values ('100', 1000)");
         //关闭QOS服务
         Server.getInstance().stop();
         new ApplicationKeeper(context).keep();

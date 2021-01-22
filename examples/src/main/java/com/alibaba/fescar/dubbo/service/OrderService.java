@@ -14,25 +14,18 @@
  *  limitations under the License.
  */
 
-package com.alibaba.fescar.tm.dubbo.dto;
+package com.alibaba.fescar.dubbo.service;
 
-import java.io.Serializable;
+import com.alibaba.fescar.dubbo.dto.Order;
 
-public class Order implements Serializable {
-    public long id;
-    public String userId;
-    public String commodityCode;
-    public int count;
-    public int money;
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", userId='" + userId + '\'' +
-                ", commodityCode='" + commodityCode + '\'' +
-                ", count=" + count +
-                ", money=" + money +
-                '}';
-    }
+public interface OrderService {
+    /**
+     * 创建订单
+     *
+     * @param userId        用户ID
+     * @param commodityCode 商品编号
+     * @param orderCount    订购数量
+     * @return 生成的订单
+     */
+    Order create(String userId, String commodityCode, int orderCount, int orderMoney);
 }

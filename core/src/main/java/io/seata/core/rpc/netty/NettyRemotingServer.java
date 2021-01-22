@@ -105,7 +105,7 @@ public class NettyRemotingServer extends AbstractNettyRemotingServer {
         // 3. registry rm message processor
         RegRmProcessor regRmProcessor = new RegRmProcessor(this);
         super.registerProcessor(MessageType.TYPE_REG_RM, regRmProcessor, messageExecutor);
-        // 4. registry tm message processor
+        // 4. registry operatelog message processor
         RegTmProcessor regTmProcessor = new RegTmProcessor(this);
         super.registerProcessor(MessageType.TYPE_REG_CLT, regTmProcessor, null);
         // 5. registry heartbeat message processor

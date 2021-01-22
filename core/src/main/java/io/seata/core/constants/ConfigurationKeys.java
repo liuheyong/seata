@@ -146,7 +146,7 @@ public interface ConfigurationKeys {
     /**
      * The constant CLIENT_TM_PREFIX.
      */
-    String CLIENT_TM_PREFIX = CLIENT_PREFIX + "tm.";
+    String CLIENT_TM_PREFIX = CLIENT_PREFIX + "operatelog.";
     /**
      * The constant CLIENT_TM_COMMIT_RETRY_TIMES.
      */

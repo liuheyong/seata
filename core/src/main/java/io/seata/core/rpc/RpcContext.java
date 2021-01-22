@@ -58,7 +58,7 @@ public class RpcContext {
     private ConcurrentMap<Channel, RpcContext> clientIDHolderMap;
 
     /**
-     * tm
+     * operatelog
      */
     private ConcurrentMap<Integer, RpcContext> clientTMHolderMap;
 
@@ -93,7 +93,7 @@ public class RpcContext {
     /**
      * Hold in client channels.
      *
-     * @param clientTMHolderMap the client tm holder map
+     * @param clientTMHolderMap the client operatelog holder map
      */
     public void holdInClientChannels(ConcurrentMap<Integer, RpcContext> clientTMHolderMap) {
         if (this.clientTMHolderMap != null) {

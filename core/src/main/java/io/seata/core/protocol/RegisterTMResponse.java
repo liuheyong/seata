@@ -18,21 +18,21 @@ package io.seata.core.protocol;
 import java.io.Serializable;
 
 /**
- * The type Register tm response.
+ * The type Register operatelog response.
  *
  * @author slievrly
  */
 public class RegisterTMResponse extends AbstractIdentifyResponse implements Serializable {
 
     /**
-     * Instantiates a new Register tm response.
+     * Instantiates a new Register operatelog response.
      */
     public RegisterTMResponse() {
         this(true);
     }
 
     /**
-     * Instantiates a new Register tm response.
+     * Instantiates a new Register operatelog response.
      *
      * @param result the result
      */

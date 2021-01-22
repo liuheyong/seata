@@ -19,7 +19,7 @@ package io.seata.serializer.seata.protocol;
 import io.seata.core.protocol.RegisterTMRequest;
 
 /**
- * The type Register tm request codec.
+ * The type Register operatelog request codec.
  *
  * @author zhangsen
  */

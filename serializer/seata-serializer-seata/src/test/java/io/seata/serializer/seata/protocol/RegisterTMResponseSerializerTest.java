@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * The type Register tm response codec test.
+ * The type Register operatelog response codec test.
  *
  * @author zhangsen
  */

@@ -35,7 +35,7 @@ public interface IdConstants {
 
     String ROLE_VALUE_TC = "tc";
 
-    String ROLE_VALUE_TM = "tm";
+    String ROLE_VALUE_TM = "operatelog";
 
     String ROLE_VALUE_RM = "rm";
 

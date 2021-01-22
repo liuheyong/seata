@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * The type Register tm response test.
+ * The type Register operatelog response test.
  */
 public class RegisterTMResponseTest {
 

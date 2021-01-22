@@ -131,7 +131,7 @@ public class NettyPoolKey {
     public enum TransactionRole {
 
         /**
-         * tm
+         * operatelog
          */
         TMROLE(1),
         /**

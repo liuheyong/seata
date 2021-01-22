@@ -58,8 +58,8 @@
     <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
     <dubbo:protocol name="dubbo" port="20882"/>
 
-    <dubbo:service interface="com.alibaba.fescar.tm.dubbo.service.StorageService" ref="service" timeout="10000"/>
-    <bean id="service" class="com.alibaba.fescar.tm.dubbo.service.impl.StorageServiceImpl">
+    <dubbo:service interface="com.alibaba.fescar.dubbo.service.StorageService" ref="service" timeout="10000"/>
+    <bean id="service" class="com.alibaba.fescar.dubbo.service.impl.StorageServiceImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
 

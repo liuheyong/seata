@@ -23,7 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import static io.seata.core.constants.ConfigurationKeys.EXTRA_DATA_SPLIT_CHAR;
 
 /**
- * The type Register tm request.
+ * The type Register operatelog request.
  *
  * @author slievrly
  */
@@ -36,14 +36,14 @@ public class RegisterTMRequest extends AbstractIdentifyRequest implements Serial
     public static final String UDATA_TIMESTAMP = "timestamp";
 
     /**
-     * Instantiates a new Register tm request.
+     * Instantiates a new Register operatelog request.
      */
     public RegisterTMRequest() {
         this(null, null);
     }
 
     /**
-     * Instantiates a new Register tm request.
+     * Instantiates a new Register operatelog request.
      *
      * @param applicationId           the application id
      * @param transactionServiceGroup the transaction service group
@@ -72,7 +72,7 @@ public class RegisterTMRequest extends AbstractIdentifyRequest implements Serial
     }
 
     /**
-     * Instantiates a new Register tm request.
+     * Instantiates a new Register operatelog request.
      *
      * @param applicationId           the application id
      * @param transactionServiceGroup the transaction service group

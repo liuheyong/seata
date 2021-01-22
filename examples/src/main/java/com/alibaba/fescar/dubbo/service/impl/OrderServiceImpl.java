@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 
-package com.alibaba.fescar.tm.dubbo.service.impl;
+package com.alibaba.fescar.dubbo.service.impl;
 
 import com.alibaba.fescar.test.common.ApplicationKeeper;
-import com.alibaba.fescar.tm.dubbo.service.AccountService;
-import com.alibaba.fescar.tm.dubbo.service.OrderService;
+import com.alibaba.fescar.dubbo.dto.Order;
+import com.alibaba.fescar.dubbo.service.OrderService;
 import io.seata.core.context.RootContext;
 import org.apache.dubbo.qos.server.Server;
 import org.slf4j.Logger;
@@ -32,31 +32,40 @@ import org.springframework.jdbc.core.JdbcTemplate;
  *     -Djava.net.preferIPv4Stack=true
  * </pre>
  */
-public class AccountServiceImpl implements AccountService {
+public class OrderServiceImpl implements OrderService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderService.class);
 
     private JdbcTemplate jdbcTemplate;
 
+    @Override
+    public Order create(String userId, String commodityCode, int orderCount, int orderMoney) {
+        LOGGER.info("Order Service Begin ... xid: " + RootContext.getXID());
+
+        String insertSql = "insert into order_tbl (user_id, commodity_code, count, money) values (" +  userId + ", " + commodityCode + ", " + orderCount + ", " + orderMoney + ")";
+        int rows = jdbcTemplate.update(insertSql);
+
+        final Order order = new Order();
+        order.userId = userId;
+        order.commodityCode = commodityCode;
+        order.count = orderCount;
+        order.money = orderMoney;
+
+        LOGGER.info("Order Service SQL: insert into order_tbl (user_id, commodity_code, count, money) values ({}, {}, {}, {})",
+                userId, commodityCode, orderCount, orderMoney);
+
+        LOGGER.info("Order Service End ... Created " + order);
+
+        return order;
+    }
+
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Override
-    public void debit(String userId, int money) {
-        LOGGER.info("Account Service ... xid: " + RootContext.getXID());
-        LOGGER.info("Deducting balance SQL: update account_tbl set money = money - {} where user_id = {}", money, userId);
-        // TODO 从账户扣款
-        jdbcTemplate.update("update account_tbl set money = money - ? where user_id = ?", new Object[]{money, userId});
-        LOGGER.info("Account Service End ... ");
-    }
-
     public static void main(String[] args) {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"dubbo-account-service.xml"});
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"dubbo-order-service.xml"});
         context.getBean("service");
-        JdbcTemplate jdbcTemplate = (JdbcTemplate) context.getBean("jdbcTemplate");
-        jdbcTemplate.update("delete from account_tbl where user_id = '100'");
-        jdbcTemplate.update("insert into account_tbl(user_id, money) values ('100', 1000)");
         //关闭QOS服务
         Server.getInstance().stop();
         new ApplicationKeeper(context).keep();

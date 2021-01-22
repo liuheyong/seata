@@ -25,7 +25,7 @@ import io.seata.core.model.GlobalStatus;
 public class GlobalTransactionEvent implements Event {
     public static final String ROLE_TC = "tc";
 
-    public static final String ROLE_TM = "tm";
+    public static final String ROLE_TM = "operatelog";
 
     public static final String ROLE_RM = "rm";
 

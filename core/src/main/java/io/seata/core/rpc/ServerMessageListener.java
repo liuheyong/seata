@@ -44,7 +44,7 @@ public interface ServerMessageListener {
     void onRegRmMessage(RpcMessage request, ChannelHandlerContext ctx, RegisterCheckAuthHandler checkAuthHandler);
 
     /**
-     * On reg tm message.
+     * On reg operatelog message.
      *
      * @param request          the msg id
      * @param ctx              the ctx

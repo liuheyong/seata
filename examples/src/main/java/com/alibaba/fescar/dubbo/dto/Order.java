@@ -14,15 +14,25 @@
  *  limitations under the License.
  */
 
-package com.alibaba.fescar.tm.dubbo.service;
+package com.alibaba.fescar.dubbo.dto;
 
-public interface StorageService {
+import java.io.Serializable;
 
-    /**
-     * 扣减库存
-     *
-     * @param commodityCode 商品编号
-     * @param count         扣减数量
-     */
-    void deduct(String commodityCode, int count);
+public class Order implements Serializable {
+    public long id;
+    public String userId;
+    public String commodityCode;
+    public int count;
+    public int money;
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", userId='" + userId + '\'' +
+                ", commodityCode='" + commodityCode + '\'' +
+                ", count=" + count +
+                ", money=" + money +
+                '}';
+    }
 }

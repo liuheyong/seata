@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * The type Register tm request test.
+ * The type Register operatelog request test.
  *
  * @author linqiuping
  */

@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package com.alibaba.fescar.tm.dubbo.service;
+package com.alibaba.fescar.dubbo.service;
 
 public interface AccountService {
 

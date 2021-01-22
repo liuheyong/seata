@@ -59,7 +59,7 @@ public interface StarterConstants {
     String SERVICE_PREFIX = SEATA_PREFIX + ".service";
     String CLIENT_PREFIX = SEATA_PREFIX + ".client";
     String CLIENT_RM_PREFIX = CLIENT_PREFIX + ".rm";
-    String CLIENT_TM_PREFIX = CLIENT_PREFIX + ".tm";
+    String CLIENT_TM_PREFIX = CLIENT_PREFIX + ".operatelog";
     String LOCK_PREFIX = CLIENT_RM_PREFIX + ".lock";
     String UNDO_PREFIX = CLIENT_PREFIX + ".undo";
     String LOG_PREFIX = CLIENT_PREFIX + ".log";
