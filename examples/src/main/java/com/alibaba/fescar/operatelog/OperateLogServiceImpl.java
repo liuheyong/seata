@@ -30,6 +30,23 @@ public class OperateLogServiceImpl {
                 Class clazz = beforeObject.getClass();
                 doAddOperateLog(afterObject, beforeObject, clazz, operateLogParam);
             } else {
+                //如果是修改
+                //beforeObject为根据id从数据库中查询出来的实体
+                Map beforeMap = getObjectMap(beforeObject);
+                Map afterMap = getObjectMap(afterObject);
+                beforeMap.forEach((k, v) -> {
+                    //业务值
+                    if (checkBusinessField(v)) {
+                        if (!v.equals(afterMap.get(k))) {
+                            //需要记录
+                        }
+                    } else {
+                        //非业务值
+                        if (checkBusinessField(afterMap.get(k))) {
+                            //需要记录
+                        }
+                    }
+                });
                 //如果是新增、修改
                 Class clazz = afterObject.getClass();
                 doAddOperateLog(beforeObject, afterObject, clazz, operateLogParam);
@@ -88,7 +105,7 @@ public class OperateLogServiceImpl {
      * @Date: 2021-01-23
      * @Description: 对象转map【属性名称->属性值】
      */
-    private static Map getObjectMap(Object object) {
+    private Map getObjectMap(Object object) {
         HashMap<String, Object> objectMap = new HashMap<>();
         try {
             if (null == object) {
@@ -125,6 +142,24 @@ public class OperateLogServiceImpl {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        return false;
+    }
+
+    private Boolean checkBusinessField(Object object) {
+        if (null == object) {
+            return false;
+        }
+        if (object instanceof String) {
+            return !"".equals((String) object);
+        } else if (object instanceof Integer) {
+            return 0 != ((Integer) object).intValue();
+        } else if (object instanceof Long) {
+            return 0 != ((Long) object).longValue();
+        } else if (object instanceof Float) {
+            return 0.0 != ((Float) object).floatValue();
+        } else if (object instanceof Double) {
+            return 0.00 != ((Double) object).doubleValue();
         }
         return false;
     }
