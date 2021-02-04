@@ -18,8 +18,8 @@ public class ApplicationContextUtil implements ApplicationContextAware {
         ApplicationContextUtil.applicationContext = applicationContext;
     }
 
-    public static Object getObject(OperateLogParam operateLogParam) throws BeansException {
-        return new Object();
-    }
+    //public static Object getObject(OperateLogParam operateLogParam) throws BeansException {
+    //    return new Object();
+    //}
 
 }
