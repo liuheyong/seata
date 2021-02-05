@@ -1,23 +1,44 @@
-//package com.alibaba.fescar.operatelog;
+//package com.yiche.sapi.opservice.impl.sys;
 //
-//
+//import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+//import com.baomidou.mybatisplus.extension.service.IService;
 //import com.google.common.collect.Lists;
+//import com.yiche.sapi.common.enums.OperateTypeEnums;
+//import com.yiche.sapi.common.enums.ResultEnum;
+//import com.yiche.sapi.common.exception.SapiServiceException;
+//import com.yiche.sapi.common.result.SapiResult;
+//import com.yiche.sapi.common.utils.LoggerUtil;
+//import com.yiche.sapi.model.entity.SysUser;
+//import com.yiche.sapi.model.entity.TOperateLog;
+//import com.yiche.sapi.model.operatelog.param.AddOperateLogParam;
+//import com.yiche.sapi.model.operatelog.param.QueryOperateLogParam;
+//import com.yiche.sapi.opservice.service.sys.OperateLogService;
+//import com.yiche.sapi.opservice.utils.SpringContextUtil;
+//import com.yiche.sapi.opservice.utils.SysUserUtil;
+//import com.yiche.sapi.repo.service.TOperateLogService;
+//import org.apache.commons.collections4.CollectionUtils;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Service;
 //
 //import java.lang.reflect.Field;
+//import java.math.BigDecimal;
 //import java.util.*;
 //
 ///**
-// * @author: zhousheng
 // * @date: 2020/9/15 16:31
 // * @description: 操作日志记录
 // */
 //@Service
-//public class OperateLogServiceImpl {
+//public class OperateLogServiceImpl implements OperateLogService {
 //
 //    @Autowired
 //    private TOperateLogService operateLogService;
+//    private static final BigDecimal ZEROBIGDECIMAL = new BigDecimal(0.00);
+//
+//    @Override
+//    public Page<TOperateLog> getOperateLogList(QueryOperateLogParam queryOperateLogParam) {
+//        return operateLogService.getOperateLogList(queryOperateLogParam);
+//    }
 //
 //    @Override
 //    public SapiResult addOperateLogWithObj(AddOperateLogParam addOperateLogParam) {
@@ -63,28 +84,19 @@
 //                Map<String, Object> beforeMap = getObjectMap(beforeObject);
 //                //map 比较
 //                for (Map.Entry<String, Object> entry : beforeMap.entrySet()) {
-//                    TOperateLog operateLog = new TOperateLog();
-//                    operateLog.setChangeField(entry.getKey());
-//                    operateLog.setBeforeChange(entry.getValue().toString());
-//                    operateLog.setOperatorId(loginUser.getId());
-//                    operateLog.setOperatorName(loginUser.getUsername());
-//                    operateLog.setOperatorModule(addOperateLogParam.getModuleType().toString());
-//                    operateLog.setOperatorChildModule(addOperateLogParam.getChildModuleType().toString());
-//                    operateLog.setOperatorHehavior(String.valueOf(addOperateLogParam.getOperateType().getOperateType()));
 //                    //校验业务值  beforeMap里面的k、v都不可能为null
-//                    if (checkBusinessField(entry.getValue())) {
-//                        if (null != afterMap.get(entry.getKey()) && !entry.getValue().equals(afterMap.get(entry.getKey()))) {
-//                            //需要记录
-//                            operateLog.setAfterChange(afterMap.get(entry.getKey()) == null ? null : afterMap.get(entry.getKey()).toString());
-//                            list.add(operateLog);
-//                        }
-//                    } else {
-//                        //非业务值、初始值
-//                        if (null != afterMap.get(entry.getKey()) && !afterMap.get(entry.getKey()).equals(entry.getValue())) {
-//                            //需要记录
-//                            operateLog.setAfterChange(afterMap.get(entry.getKey()).toString());
-//                            list.add(operateLog);
-//                        }
+//                    if (null != afterMap.get(entry.getKey()) && checkValueNotEquals(entry.getValue(), afterMap.get(entry.getKey()))) {
+//                        //需要记录
+//                        TOperateLog operateLog = new TOperateLog();
+//                        operateLog.setChangeField(entry.getKey());
+//                        operateLog.setBeforeChange(entry.getValue().toString());
+//                        operateLog.setOperatorId(loginUser.getId());
+//                        operateLog.setOperatorName(loginUser.getUsername());
+//                        operateLog.setOperatorModule(addOperateLogParam.getModuleType().toString());
+//                        operateLog.setOperatorChildModule(addOperateLogParam.getChildModuleType().toString());
+//                        operateLog.setOperatorHehavior(String.valueOf(addOperateLogParam.getOperateType().getOperateType()));
+//                        operateLog.setAfterChange(afterMap.get(entry.getKey()).toString());
+//                        list.add(operateLog);
 //                    }
 //                }
 //            } else {
@@ -118,6 +130,24 @@
 //        return new SapiResult(ResultEnum.SUCCESS.getCode(), "success");
 //    }
 //
+//    /**
+//     * @Date: 2021-01-23
+//     * @Description: 校验value值不相等返回true
+//     */
+//    public Boolean checkValueNotEquals(Object object1, Object object2) {
+//        if (object1 instanceof BigDecimal && object2 instanceof BigDecimal) {
+//            BigDecimal bigDecimal1 = (BigDecimal) object1;
+//            BigDecimal bigDecimal2 = (BigDecimal) object2;
+//            return bigDecimal1.compareTo(bigDecimal2) != 0;
+//        } else {
+//            return !object1.equals(object2);
+//        }
+//    }
+//
+//    /**
+//     * @Date: 2021-01-23
+//     * @Description: 获取Object实例
+//     */
 //    public Object getObjectById(AddOperateLogParam addOperateLogParam) {
 //        IService service = (IService) SpringContextUtil.getBean(addOperateLogParam.getServiceName());
 //        if (service == null) {
@@ -129,7 +159,7 @@
 //
 //    /**
 //     * @Date: 2021-01-23
-//     * @Description: 对象转map【属性名称->属性值】
+//     * @Description: 对象转map【属性名称 -> 属性值】
 //     */
 //    private static Map<String, Object> getObjectMap(Object object) throws Exception {
 //        if (null == object) {
@@ -162,15 +192,13 @@
 //            return false;
 //        }
 //        if (object instanceof String) {
-//            return !"".equals((String) object);
+//            return !"".equals(object);
 //        } else if (object instanceof Integer) {
 //            return 0 != ((Integer) object).intValue();
 //        } else if (object instanceof Long) {
 //            return 0 != ((Long) object).longValue();
-//        } else if (object instanceof Float) {
-//            return 0.00 != ((Float) object).floatValue();
-//        } else if (object instanceof Double) {
-//            return 0.00 != ((Double) object).doubleValue();
+//        } else if (object instanceof BigDecimal) {
+//            return ZEROBIGDECIMAL.compareTo(((BigDecimal) object)) != 0;
 //        }
 //        return false;
 //    }
